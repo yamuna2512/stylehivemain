@@ -35,6 +35,35 @@ export const UserReducer = (state = initialState.user, action) => {
   }
 };
 
+// function normalizeErrors(errors) {
+//   if (!errors || typeof errors !== "object") {
+//     return { error: ["An unexpected error occurred."] };
+//   }
+
+//   const normalized = {};
+
+//   if (errors.email) {
+//     normalized.email = Array.isArray(errors.email) ? errors.email : [errors.email];
+//   }
+
+//   if (errors.password) {
+//     normalized.password = Array.isArray(errors.password) ? errors.password : [errors.password];
+//   }
+
+//   if (errors.password_confirm) {
+//     normalized.password_confirm = Array.isArray(errors.password_confirm)
+//       ? errors.password_confirm
+//       : [errors.password_confirm];
+//   }
+
+//   if (errors.message || errors.detail) {
+//     normalized.error = [errors.message || errors.detail];
+//   }
+
+//   return normalized;
+// }
+
+
 function normalizeErrors(errors) {
   if (!errors || typeof errors !== "object") {
     return { error: ["An unexpected error occurred."] };
@@ -42,22 +71,26 @@ function normalizeErrors(errors) {
 
   const normalized = {};
 
-  if (errors.email) {
-    normalized.email = Array.isArray(errors.email) ? errors.email : [errors.email];
+  const source = errors.data || errors;
+
+  if (source.email) {
+    normalized.email = Array.isArray(source.email) ? source.email : [source.email];
   }
 
-  if (errors.password) {
-    normalized.password = Array.isArray(errors.password) ? errors.password : [errors.password];
+  if (source.password) {
+    normalized.password = Array.isArray(source.password) ? source.password : [source.password];
   }
 
-  if (errors.password_confirm) {
-    normalized.password_confirm = Array.isArray(errors.password_confirm)
-      ? errors.password_confirm
-      : [errors.password_confirm];
+  if (source.password_confirm) {
+    normalized.password_confirm = Array.isArray(source.password_confirm)
+      ? source.password_confirm
+      : [source.password_confirm];
   }
 
-  if (errors.message || errors.detail) {
-    normalized.error = [errors.message || errors.detail];
+  if (errors.message) {
+    normalized.error = [errors.message];
+  } else if (source.message || source.detail) {
+    normalized.error = [source.message || source.detail];
   }
 
   return normalized;

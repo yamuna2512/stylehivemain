@@ -33,32 +33,36 @@ export default function SignIn() {
 		});
 	};
 
-	const onSubmitSignIn = () => {
-		setIsLoading(true);
-		dispatch(
-			signIn(values, () => {
-				navigate({ pathname: "/", search });
-				dispatch(clearErrorsAction());
-			})
-		);
-		setIsLoading(false);
-	};
-// const onSubmitSignIn = async () => {
-//   setIsLoading(true);
-//   try {
-//     await dispatch(
-//       signIn(values, () => {
-//         navigate({ pathname: "/", search });
-//         dispatch(clearErrorsAction());
-//       })
-//     );
-//   } catch (err) {
-//     console.error("Sign-in failed:", err);
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };
+	// const onSubmitSignIn = () => {
+	// 	setIsLoading(true);
+	// 	dispatch(
+	// 		signIn(values, () => {
+	// 			navigate({ pathname: "/", search });
+	// 			dispatch(clearErrorsAction());
+	// 		})
+	// 	);
+	// 	setIsLoading(false);
+	// };
 
+
+
+
+const onSubmitSignIn = async () => {
+  setIsLoading(true);
+  try {
+    await dispatch(
+      signIn(values, () => {
+        navigate({ pathname: "/", search });
+        dispatch(clearErrorsAction());
+      })
+    );
+  } catch (err) {
+    console.error("Sign-in failed:", JSON.stringify(err, null, 2));
+    // No need to manually dispatch error here, handled in operation catch
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 
 	return (
